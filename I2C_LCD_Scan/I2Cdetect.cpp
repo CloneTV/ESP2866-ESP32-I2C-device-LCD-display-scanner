@@ -3,12 +3,6 @@
 i2cdetect.cpp - Arduino library for scanning I2C bus for devices
 */
 
-#if (defined(ARDUINO) && (ARDUINO >= 100))
-  #include "Arduino.h"
-#else
-  #include "WProgram.h"
-#endif
-
 /* Edit options config.h */
 #include "config.h"
 
