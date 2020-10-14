@@ -20,12 +20,22 @@ class I2CLCD {
       delete lci2c;
     }
     void init() {
-      lci2c->begin();
+      if (!lci2c->begin()) {
+#       if defined(LED_BUILTIN)
+        pinMode(LED_BUILTIN, OUTPUT);
+        digitalWrite(LED_BUILTIN, HIGH);
+#       endif
+        S_PRINT_("-- Erorr initialize I2C LCD 1602\n");
+        return;
+      }
       lci2c->backlight();
       lci2c->cursor(true);
       lci2c->blink(true);
     }
     void beginScan() {
+      if (!static_cast<bool>(lci2c))
+        return;
+
       if (lastscan == (UINT32_MAX - 1))
         lastscan = 1U;
       else
@@ -39,11 +49,15 @@ class I2CLCD {
     }
     void endScan() {
 #     if (defined(DISPLAY_CURSOR) && (DISPLAY_CURSOR > 0))
+      if (!static_cast<bool>(lci2c))
+        return;
       lci2c->blink(false);
       lci2c->cursor(false);
 #     endif
     }
     void print(uint8_t & addr) {
+      if (!static_cast<bool>(lci2c))
+        return;
       lci2c->home();
       lci2c->printf("I2C: 0x%X [%u] ", lastaddr, lastscan);
       lci2c->cursor(lastpos, 1);
