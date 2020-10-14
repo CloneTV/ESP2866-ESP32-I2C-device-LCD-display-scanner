@@ -1,12 +1,22 @@
 #if !defined (I2C_LCD_H)
 #define I2C_LCD_H 1
 
+/* Plug & Play I2C Display class.
+ * Support connect or disconnect display.
+ * Support I2C: 1602, 1306  displays.
+ */
+
 # include "ESP2866_LCD1602_I2C.h"
 typedef void (*lci2c_cb)(uint8_t&);
 
 # if defined(I2C_DISPLAY)
+#   if defined (SERIAL_PRINT)
+      static const PROGMEM char lcddisconnect__[] = "-- I2C LCD 1602 not connected!\n";
+#   endif
+
 class I2CLCD {
   private:
+    bool isdisconnect;
     uint8_t lastpos = 0U,
             lastaddr = 0U;
     uint32_t lastscan = 0U;
@@ -15,22 +25,36 @@ class I2CLCD {
   public:
     I2CLCD() {
       lci2c = new ESP2866_LCD1602_I2C<>();
+      isdisconnect = true;
     }
     ~I2CLCD() {
       delete lci2c;
     }
+    void check() {
+      if (!lci2c->check())
+        if (!isdisconnect) {
+          S_PRINT_(FPSTR(lcddisconnect__));
+          isdisconnect = true;
+        }
+      else if (isdisconnect)
+        init();
+    }
     void init() {
       if (!lci2c->begin()) {
+        if (!isdisconnect) {
+          isdisconnect = true;
+          S_PRINT_(FPSTR(lcddisconnect__));
+        }
 #       if defined(LED_BUILTIN)
         pinMode(LED_BUILTIN, OUTPUT);
         digitalWrite(LED_BUILTIN, HIGH);
 #       endif
-        S_PRINT_("-- Erorr initialize I2C LCD 1602\n");
         return;
       }
+      isdisconnect = false;
       lci2c->backlight();
-      lci2c->cursor(true);
-      lci2c->blink(true);
+      lci2c->cursor();
+      lci2c->blink();
     }
     void beginScan() {
       if (!static_cast<bool>(lci2c))

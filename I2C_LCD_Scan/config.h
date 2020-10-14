@@ -27,6 +27,11 @@
 #  define S_SPRINTF_(A,B,...)
 #endif
 
+#if !defined (FPSTR)
+#  define FPSTR(A) A
+#endif
+
+
 #if (defined(ARDUINO) && (ARDUINO >= 100))
 #  include "Arduino.h"
 #else
