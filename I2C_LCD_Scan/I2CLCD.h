@@ -102,6 +102,7 @@ class I2CLCD {
     I2CLCD() {}
     I2CLCD(void*) {}
     ~I2CLCD() {}
+    void check() {}
     void init() {}
     void beginScan() {}
     void endScan() {}

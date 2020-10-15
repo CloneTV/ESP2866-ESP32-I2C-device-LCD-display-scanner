@@ -40,4 +40,4 @@
 
 #include <Wire.h> 
 #include "I2CLCD.h"
-#include "I2CDETECT.h"
+#include "I2CScan.h"
