@@ -21,7 +21,7 @@ void loop() {
   i2clcd.check();
   i2clcd.beginScan();
   i2cscan(
-    [=](uint8_t & addr) { i2clcd.print(addr); }
+    [=](uint8_t & addr, const char *name) { i2clcd.print(addr, name); }
   );
   i2clcd.endScan();
   delay(3000);

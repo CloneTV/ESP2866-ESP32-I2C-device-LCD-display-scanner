@@ -7,7 +7,7 @@
  */
 
 # include "ESP2866_LCD1602_I2C.h"
-typedef void (*lci2c_cb)(uint8_t&);
+typedef void (*lci2c_cb)(uint8_t&, const char*);
 
 # if defined(I2C_DISPLAY)
 #   if defined (SERIAL_PRINT)
@@ -21,6 +21,7 @@ class I2CLCD {
             lastaddr = 0U;
     uint32_t lastscan = 0U;
     ESP2866_LCD1602_I2C<> *lci2c;
+    const char *i2cname = nullptr;
 
   public:
     I2CLCD() {
@@ -79,14 +80,18 @@ class I2CLCD {
       lci2c->cursor(false);
 #     endif
     }
-    void print(uint8_t & addr) {
+    void print(uint8_t & addr, const char *name) {
       if (!static_cast<bool>(lci2c))
         return;
       lci2c->home();
-      lci2c->printf("I2C: 0x%X [%u] ", lastaddr, lastscan);
+      if (i2cname)
+        lci2c->printf("[%u] 0x%X %.7s", lastscan, lastaddr, i2cname);
+      else
+        lci2c->printf("I2C: 0x%X [%u] ", lastaddr, lastscan);
       lci2c->cursor(lastpos, 1);
       lci2c->printf("%X,", addr);
       lastaddr = addr;
+      i2cname = name;
       lastpos = ((lastpos > 12) ? 0U : (lastpos + 3U));
     }
 };

@@ -1,6 +1,6 @@
 
-#define DEF_SCL 5
-#define DEF_SDA 4
+
+#include "I2CDefine.h"
 
 #define DEF_FIRST_ADDR 0x03
 #define DEF_LAST_ADDR  0x77
