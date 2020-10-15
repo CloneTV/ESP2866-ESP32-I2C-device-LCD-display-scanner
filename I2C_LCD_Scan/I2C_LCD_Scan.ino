@@ -2,8 +2,6 @@
 /* Edit options config.h */
 #include "config.h"
 
-static const uint8_t scl_PIN = 5U;
-static const uint8_t sda_PIN = 4U;
 #if defined (SERIAL_PRINT)
  static const PROGMEM char about__[] = "-- Scanning I2C address range 0x03-0x77\n\n";
 #endif
