@@ -1,7 +1,5 @@
 
 
-#include "I2CDefine.h"
-
 #define DEF_FIRST_ADDR 0x03
 #define DEF_LAST_ADDR  0x77
 
@@ -27,15 +25,16 @@
 #  define S_SPRINTF_(A,B,...)
 #endif
 
-#if !defined (FPSTR)
-#  define FPSTR(A) A
-#endif
-
-
 #if (defined(ARDUINO) && (ARDUINO >= 100))
 #  include "Arduino.h"
 #else
 #  include "WProgram.h"
+#endif
+
+#include "I2CDefine.h"
+
+#if !defined (FPSTR)
+#  define FPSTR(A) A
 #endif
 
 #include <Wire.h> 

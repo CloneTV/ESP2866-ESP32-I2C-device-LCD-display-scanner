@@ -45,7 +45,8 @@ static const char * i2cname(uint8_t & addr) {
     case 0x25: return i2cnames[6];
     case 0x26: return i2cnames[6];
     case 0x27: return i2cnames[5];
-    case 0x3C: return i2cnames[5];
+    case 0x3C: return i2cnames[15];
+    case 0x3D: return i2cnames[15];
     case 0x39: return i2cnames[8];
     case 0x40: return i2cnames[9]; 
     case 0x48: return i2cnames[10];
